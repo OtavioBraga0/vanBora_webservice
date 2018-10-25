@@ -1,0 +1,76 @@
+body{
+    background-color: #ecf0f5
+}
+
+#inputResumo{
+    height: 75px;
+    resize: none;
+}
+
+.form-flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.form-flex-between{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-flex-start{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.form-flex-between-end{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.form-flex-between input{
+    width: 45%;
+}
+
+#inputDataInicial, #inputDataFinal{
+    width: 45%
+}
+
+.form-control{
+    box-shadow: none!important
+}
+
+section{
+    margin-bottom: 0px!important;
+}
+
+.sortable .lisort {
+    float: none!important
+}
+
+.box-foto-edit{
+    padding: 0px;
+}
+
+.fotos-album{
+    height: auto
+}
+
+.notifyjs-danger-base {
+    height: 100px;
+}
+
+div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable{
+    right: calc(50% - 210px);
+    left: auto;
+    z-index: 9999;
+    margin-top: 20px
+}
+
+.pagina-size{
+    height: 685px;
+    overflow: auto;
+}

@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d
+
+ErrorDocument 404 /index.php
+
+RewriteRule ^(.*)/(.*)/(.*)$ index.php?s=$1&c=$2&a=$3
