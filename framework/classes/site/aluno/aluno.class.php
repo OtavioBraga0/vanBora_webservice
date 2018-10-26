@@ -1,17 +1,13 @@
 <?php
 
-class Usuario
+class Grupo
 {
     
     /* Atributos */
-    private $Usuario_lng_Codigo;
-    private $Usuario_vch_Nome;
-    private $Usuario_dat_DataNascimento;
-    private $Usuario_vch_Endereco;
-    private $Usuario_vch_Numero;
-    private $Usuario_vch_Complemento;
-    private $Usuario_vch_Celular;
-    private $Usuario_chr_Tipo;
+    private $iCodigo;
+    private $sNome;
+    private $sHorario;
+    private $iUsuario;
     
     /* M�todos m�gicos GET e SET */
     public function __get($property) 

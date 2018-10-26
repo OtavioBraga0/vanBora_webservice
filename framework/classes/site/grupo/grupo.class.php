@@ -4,10 +4,11 @@ class Grupo
 {
     
     /* Atributos */
-    private $iCodigo;
-    private $sNome;
-    private $sHorario;
-    private $iUsuario;
+    private $Grupo_lng_Codigo;
+    private $Grupo_vch_Nome;
+    private $Grupo_vch_Horario;
+    private $Usuario_lng_Codigo;
+    private $Periodo_lng_Codigo;
     
     /* M�todos m�gicos GET e SET */
     public function __get($property) 

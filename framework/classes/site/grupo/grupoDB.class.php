@@ -35,8 +35,9 @@ class GrupoDB
         $oConexao = db::conectar();
         
         $sFiltros = '';
+        $sJoin = '';
         $sLimite  = '';
-        
+
         // Define os Filtros
         if (isset(self::$mArrCampos['CONDICAO']))
         {
@@ -46,11 +47,25 @@ class GrupoDB
                 {
                     $sFiltros .= (self::$mArrCampos['CONDICAO'][$a]);
                 }
-                //Limpa Filtros
-                self::$mArrCampos['CONDICAO'] = '';
             }
+            //Limpa Filtros
+            self::$mArrCampos['CONDICAO'] = '';
         }
-        
+
+        // Define os Joins
+        if (isset(self::$mArrJoin['JOIN']))
+        {
+            if ( self::$mArrJoin['JOIN'] <> '' )
+            {
+                for ($a = 0, $iCount = count(self::$mArrJoin['JOIN']); $a < $iCount; ++$a)
+                {
+                    $sJoin .= (self::$mArrJoin['JOIN'][$a]);
+                }
+            }
+            //Limpa Filtros
+            self::$mArrJoin['JOIN'] = '';
+        }
+
         /* Define o Limite */
         if (self::$iLimite > 0)
         {
@@ -62,10 +77,7 @@ class GrupoDB
         }
              
         $mResultado = $oConexao->prepare("SELECT
-                           Grupo_lng_Codigo,
-                           Grupo_vch_Nome,
-                           Grupo_vch_Horario,
-                           Usuario_lng_Codigo
+                           *
                            FROM Grupo
                            WHERE 1 = 1 ".$sFiltros."                       
                            ORDER BY ".self::$sOrdem."
@@ -86,9 +98,10 @@ class GrupoDB
             {
                  $oGrupo = [
                     'Grupo_lng_Codigo'  => $mArrDados[$a]['Grupo_lng_Codigo'],
-                    'Grupo_vch_Nome'    => $mArrDados[$a]['Grupo_vch_Nome'],
+                    'Grupo_vch_Nome'    => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
                     'Grupo_vch_Horario' => $mArrDados[$a]['Grupo_vch_Horario'],
-                    'Usuario_lng_Codigo'=> $mArrDados[$a]['Usuario_lng_Codigo']
+                    'Usuario_lng_Codigo'=> $mArrDados[$a]['Usuario_lng_Codigo'],
+                    'Periodo_lng_Codigo'=> $mArrDados[$a]['Periodo_lng_Codigo'],
                  ];
 
                  $arrObjGrupo[] = $oGrupo;
@@ -102,26 +115,51 @@ class GrupoDB
         $oConexao = db::conectar();
         
         $sFiltros = '';
-        
+        $sJoin = '';
+        $sLimite  = '';
+
         // Define os Filtros
         if (isset(self::$mArrCampos['CONDICAO']))
         {
-            for ($a = 0, $iCount = count(self::$mArrCampos['CONDICAO']); $a < $iCount; ++$a)
+            if ( self::$mArrCampos['CONDICAO'] <> '' )
             {
-                $sFiltros .= (self::$mArrCampos['CONDICAO'][$a]);
+                for ($a = 0, $iCount = count(self::$mArrCampos['CONDICAO']); $a < $iCount; ++$a)
+                {
+                    $sFiltros .= (self::$mArrCampos['CONDICAO'][$a]);
+                }
             }
             //Limpa Filtros
             self::$mArrCampos['CONDICAO'] = '';
         }
+
+        // Define os Joins
+        if (isset(self::$mArrJoin['JOIN']))
+        {
+            if ( self::$mArrJoin['JOIN'] <> '' )
+            {
+                for ($a = 0, $iCount = count(self::$mArrJoin['JOIN']); $a < $iCount; ++$a)
+                {
+                    $sJoin .= (self::$mArrJoin['JOIN'][$a]);
+                }
+            }
+            //Limpa Filtros
+            self::$mArrJoin['JOIN'] = '';
+        }
+
+        /* Define o Limite */
+        if (self::$iLimite > 0)
+        {
+            $sLimite = (' LIMIT '.self::$iInicio.",".self::$iLimite);
+
+            //Limpa Filtro
+            self::$iInicio = 0;
+            self::$iLimite = 0;
+        }
              
         $mResultado = $oConexao->prepare("SELECT
-                           Grupo_lng_Codigo,
-                           Grupo_vch_Titulo,
-                           Grupo_chr_Visivel,
-                           Grupo_vch_Credito,
-                           Grupo_Tipo_lng_Codigo,
-                           Grupo_vch_Tipo
+                           *
                            FROM Grupo
+                           ".$sJoin."
                            WHERE 1 = 1 ".$sFiltros."                       
                          ");  
         
@@ -130,84 +168,16 @@ class GrupoDB
         $mArrDados = $mResultado->fetch(PDO::FETCH_ASSOC);
         ;
          /* Instancia o Objeto */
-        $oGrupo = new Grupo;
       
         if (is_array($mArrDados))
         {          
-           $oGrupo->iCodigo  = $mArrDados['Grupo_lng_Codigo'];
-           $oGrupo->sTitulo  = utf8_encode($mArrDados['Grupo_vch_Titulo']);
-           $oGrupo->sVisivel = $mArrDados['Grupo_chr_Visivel'];
-           $oGrupo->sCredito = utf8_encode($mArrDados['Grupo_vch_Credito']);
-           $oGrupo->sTipo = $mArrDados['Grupo_vch_Tipo'];
-           
-           if ($tipo == true)
-           {
-               GrupoTipoDB::setaFiltro(" AND Grupo_Tipo_lng_Codigo = ".$mArrDados['Grupo_Tipo_lng_Codigo']);
-               $oGrupoTipo = GrupoTipoDB::pesquisaGrupoTipo();
-               $oGrupo->oGrupoTipo = $oGrupoTipo;
-           }
-           
-           FotoDB::setaFiltro(" AND Grupo_lng_Codigo = $oGrupo->iCodigo");
-           $arrObjFoto = FotoDB::pesquisaFotoLista();
-           
-           $oGrupo->arrObjFoto = $arrObjFoto;
-        }
-        
-        return $oGrupo;     
-    }
-    
-    public static function pesquisaGrupoJson( $tipo = false )
-    {
-        $oConexao = db::conectar();
-        
-        $sFiltros = '';
-        
-        // Define os Filtros
-        if (isset(self::$mArrCampos['CONDICAO']))
-        {
-            for ($a = 0, $iCount = count(self::$mArrCampos['CONDICAO']); $a < $iCount; ++$a)
-            {
-                $sFiltros .= (self::$mArrCampos['CONDICAO'][$a]);
-            }
-            //Limpa Filtros
-            self::$mArrCampos['CONDICAO'] = '';
-        }
-             
-        $mResultado = $oConexao->prepare("SELECT
-                           Grupo_lng_Codigo,
-                           Grupo_vch_Titulo,
-                           Grupo_chr_Visivel,
-                           Grupo_vch_Credito,
-                           Grupo_Tipo_lng_Codigo,
-                           Grupo_vch_Tipo
-                           FROM Grupo
-                           WHERE 1 = 1 ".$sFiltros."                       
-                         ");  
-        
-        $mResultado->execute();
-        
-        $mArrDados = $mResultado->fetch(PDO::FETCH_ASSOC);
-        
-      
-        if (is_array($mArrDados))
-        {          
-           $oGrupo->iCodigo  = $mArrDados['Grupo_lng_Codigo'];
-           $oGrupo->sTitulo  = utf8_encode($mArrDados['Grupo_vch_Titulo']);
-           $oGrupo->sVisivel = $mArrDados['Grupo_chr_Visivel'];
-           $oGrupo->sCredito = utf8_encode($mArrDados['Grupo_vch_Credito']);
-           $oGrupo->sTipo = $mArrDados['Grupo_vch_Tipo'];
-           
-           FotoDB::setaFiltro(" AND Grupo_lng_Codigo = $oGrupo->iCodigo");
-           $arrObjFoto = FotoDB::pesquisaFotoListaJson();
-
-           $oGrupo = array(
-                'iCodigo'  => $mArrDados['Grupo_lng_Codigo'],
-                'sTitulo'  => utf8_encode($mArrDados['Grupo_vch_Titulo']),
-                'sVisivel' => $mArrDados['Grupo_chr_Visivel'],
-                'sCredito' => utf8_encode($mArrDados['Grupo_vch_Credito']),
-                'sTipo' => $mArrDados['Grupo_vch_Tipo'],
-                'arrObjFoto' => $arrObjFoto
-           );
+            $oGrupo = [
+                'Grupo_lng_Codigo'  => $mArrDados[$a]['Grupo_lng_Codigo'],
+                'Grupo_vch_Nome'    => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
+                'Grupo_vch_Horario' => $mArrDados[$a]['Grupo_vch_Horario'],
+                'Usuario_lng_Codigo'=> $mArrDados[$a]['Usuario_lng_Codigo'],
+                'Periodo_lng_Codigo'=> $mArrDados[$a]['Periodo_lng_Codigo'],
+             ];
         }
         
         return $oGrupo;     
@@ -218,19 +188,17 @@ class GrupoDB
         $oConexao = db::conectar();
         
         $sSql=$oConexao->prepare("UPDATE Grupo SET
-                    Grupo_vch_Titulo       = :titulo,
-                    Grupo_chr_Visivel      = :visivel,
-                    Grupo_vch_Credito      = :credito,
-                    Grupo_Tipo_lng_Codigo  = :Grupo_tipo,
-                    Grupo_vch_Tipo         = :tipo
+                    Grupo_vch_Nome       = :nome,
+                    Grupovch_Horario      = :horario,
+                    Usuario_lng_Codigo  = :usuario,
+                    Periodo_lng_Codigo  = :periodo
                     WHERE Grupo_lng_Codigo = :codigo " );
  
-        $sSql->bindParam(':codigo',   ($oGrupo->iCodigo));
-        $sSql->bindParam(':titulo',   ($oGrupo->sTitulo));
-        $sSql->bindParam(':visivel',  ($oGrupo->sVisivel));
-        $sSql->bindParam(':credito',  ($oGrupo->sCredito));
-        $sSql->bindParam(':tipo',     ($oGrupo->sTipo));
-        $sSql->bindParam(':Grupo_tipo',  ($oGrupo->oGrupoTipo->iCodigo));
+        $sSql->bindParam(':codigo',   ($oGrupo->Grupo_lng_Codigo));
+        $sSql->bindParam(':nome',   ($oGrupo->Grupo_vch_Nome));
+        $sSql->bindParam(':horario',  ($oGrupo->Grupo_vch_Horario));
+        $sSql->bindParam(':periodo',     ($oGrupo->Periodo_lng_Codigo));
+        $sSql->bindParam(':usuario',  ($oGrupo->Usuario_lng_Codigo));
         
         $sSql->execute();
     }
@@ -240,37 +208,20 @@ class GrupoDB
         $oConexao = db::conectar();
         
         $sSql = $oConexao->prepare("INSERT INTO Grupo (
-                    Grupo_vch_Titulo,
-                    Grupo_chr_Visivel,
-                    Grupo_vch_Credito,
-                    Grupo_Tipo_lng_Codigo,
-                    Grupo_vch_Tipo
-                    ) VALUES ( ?,?,?,?,? )"); 
+                    Grupo_vch_Nome,
+                    Grupovch_Horario,
+                    Usuario_lng_Codigo,
+                    Periodo_lng_Codigo
+                    ) VALUES ( ?,?,?,? )"); 
         
-        $sSql->bindParam(1, ($oGrupo->sTitulo));
-        $sSql->bindParam(2, ($oGrupo->sVisivel));
-        $sSql->bindParam(3, ($oGrupo->sCredito));
-        $sSql->bindParam(4, ($oGrupo->oGrupoTipo->iCodigo));
-        $sSql->bindParam(5, ($oGrupo->sTipo));
+        $sSql->bindParam(1,   ($oGrupo->Grupo_vch_Nome));
+        $sSql->bindParam(2,  ($oGrupo->Grupo_vch_Horario));
+        $sSql->bindParam(3,     ($oGrupo->Periodo_lng_Codigo));
+        $sSql->bindParam(4,  ($oGrupo->Usuario_lng_Codigo));
         $sSql->execute();
         
         return $oConexao->lastInsertId(); 
         //$sSql->debugDumpParams(); 
-    }
-    
-        
-    public static final function alteraCapa( $oGrupo )
-    {                 
-        $oConexao = db::conectar();
-        
-        $sSql=$oConexao->prepare("UPDATE Grupo SET
-                    Foto_lng_Codigo      = :GrupoCodigo
-                    WHERE Grupo_lng_Codigo = :fotoCodigo " );
-        //var_dump($sSql);
-        $sSql->bindParam(':GrupoCodigo', ($oGrupo->iCodigo));
-        $sSql->bindParam(':fotoCodigo',  ($oGrupo->iFotoCodigo));
-        
-        $sSql->execute();
     }
     
     public static final function excluiGrupo( $iCodigo  )
@@ -283,53 +234,6 @@ class GrupoDB
         $sSql->bindParam(':codigo',$iCodigo, PDO::PARAM_INT);   
         $sSql->execute();
     }
-    
-    public static final function contaGrupo( )
-    {
-        $oConexao = db::conectar();
-        
-        $sFiltros = '';
-        $sJoin    = '';
-        
-        // Define os Filtros
-        if (isset(self::$mArrCampos['CONDICAO']))
-        {
-            for ($a = 0, $iCount = count(self::$mArrCampos['CONDICAO']); $a < $iCount; ++$a)
-            {
-                $sFiltros .= (self::$mArrCampos['CONDICAO'][$a]);
-            }
-            //Limpa Filtros
-            //self::$mArrCampos['CONDICAO'] = '';
-        }
-        
-        // Define os Joins
-        if (isset(self::$mArrJoin['JOIN']))
-        {
-            if ( self::$mArrJoin['JOIN'] <> '' )
-            {
-                for ($a = 0, $iCount = count(self::$mArrJoin['JOIN']); $a < $iCount; ++$a)
-                {
-                    $sJoin .= (self::$mArrJoin['JOIN'][$a]);
-                }
-            }
-            //Limpa Filtros
-            //self::$mArrJoin['JOIN'] = '';
-        }
-             
-        $mResultado = $oConexao->prepare("SELECT
-                           count(*)
-                           FROM Grupo
-                           ".$sJoin."
-                           WHERE 1 = 1 ".$sFiltros."                       
-                         ");  
-        //echo $mResultado->queryString;
-        $mResultado->execute();
-        
-        $iTotal = $mResultado->fetchColumn();
-        
-        return $iTotal;     
-    }
-    
  
 }
 

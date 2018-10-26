@@ -1,11 +1,11 @@
 <?php
 
-class UsuarioDB
+class AlunoDB
 {
     
     private static $mArrCampos = '';
     private static $mArrJoin   = '';
-    private static $sOrdem     = 'Usuario_lng_Codigo';
+    private static $sOrdem     = 'Aluno_lng_Codigo';
     private static $iLimite = 0;
     private static $iInicio = 0;
     
@@ -30,7 +30,7 @@ class UsuarioDB
         self::$iInicio = $iArgInicio;
     }
     
-    public static function pesquisaUsuarioLista( )
+    public static function pesquisaAlunoLista( )
     {
         $oConexao = db::conectar();
         
@@ -78,42 +78,40 @@ class UsuarioDB
              
         $mResultado = $oConexao->prepare("SELECT
                            *
-                           FROM Usuario
+                           FROM Aluno
+                           ".$sJoin."
                            WHERE 1 = 1 ".$sFiltros."                       
                            ORDER BY ".self::$sOrdem."
                            ".$sLimite."
                          ");  
 
-//        echo $mResultado->queryString;
+    //    echo $mResultado->queryString;
         $mResultado->execute();
 
         $mArrDados = $mResultado->fetchAll(PDO::FETCH_ASSOC);
         
          /* Instancia o Objeto */
-        $arrObjUsuario = [];
+        $arrObjAluno = [];
         
         if (is_array($mArrDados))
         { 
             for ($a = 0, $iCount = count($mArrDados); $a < $iCount; ++$a)
             {
-                 $oUsuario = [
-                    'Usuario_lng_Codigo' => $mArrDados[$a]['Usuario_lng_Codigo'],
-                    'Usuario_vch_Nome' => utf8_encode($mArrDados[$a]['Usuario_vch_Nome']),
-                    'Usuario_dat_DataNascimento' => $mArrDados[$a]['Usuario_dat_DataNascimento'],
-                    'Usuario_vch_Endereco' => utf8_encode($mArrDados[$a]['Usuario_vch_Endereco']),
-                    'Usuario_vch_Numero' => utf8_encode($mArrDados[$a]['Usuario_vch_Numero']),
-                    'Usuario_vch_Complemento' => utf8_encode($mArrDados[$a]['Usuario_vch_Complemento']),
-                    'Usuario_vch_Celular' => $mArrDados[$a]['Usuario_vch_Celular'],
-                    'Usuario_chr_Tipo' => $mArrDados[$a]['Usuario_chr_Tipo']
+                 $oAluno = [
+                    'Aluno_lng_Codigo'      => $mArrDados[$a]['Aluno_lng_Codigo'],
+                    'Grupo_lng_Codigo'      => $mArrDados[$a]['Grupo_lng_Codigo'],
+                    'Usuario_lng_Codigo'    => $mArrDados[$a]['Usuario_lng_Codigo'],
+                    'Aluno_chr_Confirmacao' => $mArrDados[$a]['Aluno_chr_Confirmacao'],
+                    'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome'])
                  ];
 
-                 $arrObjUsuario[] = $oUsuario;
+                 $arrObjAluno[] = $oAluno;
             }
         } 
-        return $arrObjUsuario;
+        return $arrObjAluno;
     }
     
-    public static function pesquisaUsuario( $tipo = false )
+    public static function pesquisaAluno( $tipo = false )
     {
         $oConexao = db::conectar();
         
@@ -161,7 +159,7 @@ class UsuarioDB
              
         $mResultado = $oConexao->prepare("SELECT
                            *
-                           FROM Usuario
+                           FROM Aluno
                            ".$sJoin."
                            WHERE 1 = 1 ".$sFiltros."                       
                          ");  
@@ -169,86 +167,71 @@ class UsuarioDB
         $mResultado->execute();
         
         $mArrDados = $mResultado->fetch(PDO::FETCH_ASSOC);
+        ;
+         /* Instancia o Objeto */
       
         if (is_array($mArrDados))
         {          
-            $oUsuario = [
+            $oAluno = [
+                'Aluno_lng_Codigo' => $mArrDados[0]['Aluno_lng_Codigo'],
+                'Grupo_lng_Codigo' => $mArrDados[0]['Grupo_lng_Codigo'],
                 'Usuario_lng_Codigo' => $mArrDados[0]['Usuario_lng_Codigo'],
-                'Usuario_vch_Nome' => utf8_encode($mArrDados[0]['Usuario_vch_Nome']),
-                'Usuario_dat_DataNascimento' => $mArrDados[0]['Usuario_dat_DataNascimento'],
-                'Usuario_vch_Endereco' => utf8_encode($mArrDados[0]['Usuario_vch_Endereco']),
-                'Usuario_vch_Numero' => utf8_encode($mArrDados[0]['Usuario_vch_Numero']),
-                'Usuario_vch_Complemento' => utf8_encode($mArrDados[0]['Usuario_vch_Complemento']),
-                'Usuario_vch_Celular' => $mArrDados[0]['Usuario_vch_Celular'],
-                'Usuario_chr_Tipo' => $mArrDados[0]['Usuario_chr_Tipo']
+                'Aluno_chr_Confirmacao' => $mArrDados[0]['Aluno_chr_Confirmacao'],
+                'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome'])
              ];
         }
         
-        return $oUsuario;     
+        return $oAluno;     
     }
 
-    public static final function alteraUsuario( $oUsuario )
+    public static final function alteraAluno( $oAluno )
     {                 
         $oConexao = db::conectar();
         
-        $sSql=$oConexao->prepare("UPDATE Usuario SET
-                        Usuario_vch_Nome = :nome,
-                        Usuario_dat_DataNascimento = :data,
-                        Usuario_vch_Endereco = :endereco,
-                        Usuario_vch_Numero = :numero,
-                        Usuario_vch_Complemento = :complemento,
-                        Usuario_vch_Celular = :celular,
-                        Usuario_chr_Tipo = :tipo
-                    WHERE Usuario_lng_Codigo = :codigo " );
+        $sSql=$oConexao->prepare("UPDATE Aluno SET
+                    Grupo_lng_Codigo = :grupo,
+                    Usuario_lng_Codigo = :usuario,
+                    Aluno_chr_Confirmacao = :confirmacao,
+                    WHERE Aluno_lng_Codigo = :codigo " );
  
-        $sSql->bindParam(':codigo',   ($oUsuario->Usuario_lng_Codigo));
-        $sSql->bindParam(':nome',   ($oUsuario->Usuario_vch_Nome));
-        $sSql->bindParam(':data',  ($oUsuario->Usuario_dat_DataNascimento));
-        $sSql->bindParam(':endereco',  ($oUsuario->Usuario_vch_Endereco));
-        $sSql->bindParam(':numero',     ($oUsuario->Usuario_vch_Numero));
-        $sSql->bindParam(':complemento',  ($oUsuario->Usuario_vch_Complemento));
-        $sSql->bindParam(':celular',  ($oUsuario->Usuario_vch_Celular));
-        $sSql->bindParam(':tipo',  ($oUsuario->Usuario_chr_Tipo));
+        $sSql->bindParam(':codigo',   ($oAluno->Aluno_lng_Codigo));
+        $sSql->bindParam(':grupo',   ($oAluno->Grupo_lng_Codigo));
+        $sSql->bindParam(':usuario',  ($oAluno->Usuario_lng_Codigo));
+        $sSql->bindParam(':confirmacao',  ($oAluno->Aluno_chr_Confirmacao));
         
         $sSql->execute();
     }
     
-    public static final function salvaUsuario( $oUsuario )
+    public static final function salvaAluno( $oAluno )
     { 
         $oConexao = db::conectar();
         
-        $sSql = $oConexao->prepare("INSERT INTO Usuario (
-                    Usuario_vch_Nome,
-                    Usuario_dat_DataNascimento,
-                    Usuario_vch_Endereco,
-                    Usuario_vch_Numero,
-                    Usuario_vch_Complemento,
-                    Usuario_vch_Celular,
-                    Usuario_chr_Tipo
-                    ) VALUES ( ?,?,?,?,?,?,? )"); 
+        $sSql = $oConexao->prepare("INSERT INTO Aluno (
+                    Grupo_lng_Codigo,
+                    Usuario_lng_Codigo,
+                    Aluno_chr_Confirmacao
+                    ) VALUES ( ?,?,? )"); 
         
-        $sSql->bindParam(1,   ($oUsuario->Usuario_vch_Nome));
-        $sSql->bindParam(2,  ($oUsuario->Usuario_dat_DataNascimento));
-        $sSql->bindParam(3,  ($oUsuario->Usuario_vch_Endereco));
-        $sSql->bindParam(4,     ($oUsuario->Usuario_vch_Numero));
-        $sSql->bindParam(5,  ($oUsuario->Usuario_vch_Complemento));
-        $sSql->bindParam(6,  ($oUsuario->Usuario_vch_Celular));
-        $sSql->bindParam(7,  ($oUsuario->Usuario_chr_Tipo));
+        $sSql->bindParam(1,  ($oAluno->Grupo_lng_Codigo));
+        $sSql->bindParam(2,  ($oAluno->Usuario_lng_Codigo));
+        $sSql->bindParam(3,  ($oAluno->Aluno_chr_Confirmacao));
         $sSql->execute();
         
         return $oConexao->lastInsertId(); 
+        //$sSql->debugDumpParams(); 
     }
     
-    public static final function excluiUsuario( $iCodigo  )
+    public static final function excluiAluno( $iCodigo  )
     {
         $oConexao = db::conectar();
         
-        $sSql = $oConexao->prepare("DELETE FROM Usuario 
-                    WHERE Usuario_lng_Codigo = :codigo ");
+        $sSql = $oConexao->prepare("DELETE FROM Aluno 
+                    WHERE Aluno_lng_Codigo = :codigo ");
        
         $sSql->bindParam(':codigo',$iCodigo, PDO::PARAM_INT);   
         $sSql->execute();
-    }  
+    }
+  
  
 }
 
