@@ -16,6 +16,24 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`vanbora` /*!40100 DEFAULT CHARACTER SET
 
 USE `vanbora`;
 
+/*Table structure for table `aluno` */
+
+DROP TABLE IF EXISTS `aluno`;
+
+CREATE TABLE `aluno` (
+  `Aluno_lng_Codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `Grupo_lng_Codigo` int(11) DEFAULT NULL,
+  `Usuario_lng_Codigo` int(11) DEFAULT NULL,
+  `Aluno_chr_Confirmacao` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`Aluno_lng_Codigo`),
+  KEY `Grupo_lng_Codigo` (`Grupo_lng_Codigo`),
+  KEY `Usuario_lng_Codigo` (`Usuario_lng_Codigo`),
+  CONSTRAINT `aluno_ibfk_1` FOREIGN KEY (`Grupo_lng_Codigo`) REFERENCES `grupo` (`Grupo_lng_Codigo`),
+  CONSTRAINT `aluno_ibfk_2` FOREIGN KEY (`Usuario_lng_Codigo`) REFERENCES `usuario` (`Usuario_lng_Codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `aluno` */
+
 /*Table structure for table `grupo` */
 
 DROP TABLE IF EXISTS `grupo`;
@@ -25,15 +43,27 @@ CREATE TABLE `grupo` (
   `Grupo_vch_Nome` varchar(255) DEFAULT NULL,
   `Grupo_vch_Horario` varchar(255) DEFAULT NULL,
   `Usuario_lng_Codigo` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Grupo_lng_Codigo`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `Periodo_lng_Codigo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Grupo_lng_Codigo`),
+  KEY `Periodo_lng_Codigo` (`Periodo_lng_Codigo`),
+  KEY `Usuario_lng_Codigo` (`Usuario_lng_Codigo`),
+  CONSTRAINT `grupo_ibfk_1` FOREIGN KEY (`Periodo_lng_Codigo`) REFERENCES `periodo` (`Periodo_lng_Codigo`),
+  CONSTRAINT `grupo_ibfk_2` FOREIGN KEY (`Usuario_lng_Codigo`) REFERENCES `usuario` (`Usuario_lng_Codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `grupo` */
 
-insert  into `grupo`(`Grupo_lng_Codigo`,`Grupo_vch_Nome`,`Grupo_vch_Horario`,`Usuario_lng_Codigo`) values 
-(1,'Grupo 1','16:00',1),
-(2,'Grupo 2 ','15:00',2),
-(3,'Grupo 3','18:00',1);
+/*Table structure for table `periodo` */
+
+DROP TABLE IF EXISTS `periodo`;
+
+CREATE TABLE `periodo` (
+  `Periodo_lng_Codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `Periodo_vch_Nome` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Periodo_lng_Codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `periodo` */
 
 /*Table structure for table `usuario` */
 
@@ -49,7 +79,7 @@ CREATE TABLE `usuario` (
   `Usuario_vch_Celular` varchar(255) DEFAULT NULL,
   `Usuario_chr_Tipo` char(1) DEFAULT NULL,
   PRIMARY KEY (`Usuario_lng_Codigo`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuario` */
 
