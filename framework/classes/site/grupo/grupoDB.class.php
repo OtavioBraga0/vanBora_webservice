@@ -209,7 +209,7 @@ class GrupoDB
         
         $sSql = $oConexao->prepare("INSERT INTO Grupo (
                     Grupo_vch_Nome,
-                    Grupovch_Horario,
+                    Grupo_vch_Horario,
                     Usuario_lng_Codigo,
                     Periodo_lng_Codigo
                     ) VALUES ( ?,?,?,? )"); 
