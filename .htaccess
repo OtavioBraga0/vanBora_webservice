@@ -5,12 +5,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # ErrorDocument 404 /index.php
 ErrorDocument 404 /index.php?pagina=site/404
 
-RewriteRule ^aluno$             index.php?pagina=site/aluno
+RewriteRule ^listaAluno$     index.php?pagina=site/listaAluno
+RewriteRule ^salvaAluno$     index.php?pagina=site/salvaAluno
 
 RewriteRule ^salvaUsuario$   index.php?pagina=site/salvaUsuario
 RewriteRule ^editaUsuario$   index.php?pagina=site/editaUsuario
 RewriteRule ^listaUsuario$   index.php?pagina=site/listaUsuario
 
 
-RewriteRule ^grupo$             index.php?pagina=site/grupo
+RewriteRule ^listaGrupo$     index.php?pagina=site/listaGrupo
 RewriteRule ^salvaGrupo$     index.php?pagina=site/salvaGrupo

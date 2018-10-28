@@ -206,7 +206,7 @@ class GrupoDB
     public static final function salvaGrupo( $oGrupo )
     { 
         $oConexao = db::conectar();
-        
+
         $sSql = $oConexao->prepare("INSERT INTO Grupo (
                     Grupo_vch_Nome,
                     Grupo_vch_Horario,
@@ -214,14 +214,14 @@ class GrupoDB
                     Periodo_lng_Codigo
                     ) VALUES ( ?,?,?,? )"); 
         
-        $sSql->bindParam(1,   ($oGrupo->Grupo_vch_Nome));
+        $sSql->bindParam(1,  ($oGrupo->Grupo_vch_Nome));
         $sSql->bindParam(2,  ($oGrupo->Grupo_vch_Horario));
-        $sSql->bindParam(3,     ($oGrupo->Periodo_lng_Codigo));
-        $sSql->bindParam(4,  ($oGrupo->Usuario_lng_Codigo));
+        $sSql->bindParam(3,  ($oGrupo->Usuario_lng_Codigo));
+        $sSql->bindParam(4,  ($oGrupo->Periodo_lng_Codigo));
         $sSql->execute();
+        // $sSql->debugDumpParams(); 
         
         return $oConexao->lastInsertId(); 
-        //$sSql->debugDumpParams(); 
     }
     
     public static final function excluiGrupo( $iCodigo  )
