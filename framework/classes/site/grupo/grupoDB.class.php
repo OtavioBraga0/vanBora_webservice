@@ -99,7 +99,7 @@ class GrupoDB
             {
                  $oGrupo = [
                     'Grupo_lng_Codigo'      => $mArrDados[$a]['Grupo_lng_Codigo'],
-                    'Grupo_vch_Nome'        => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
+                    'Grupo_vch_Nome'        => $mArrDados[$a]['Grupo_vch_Nome'],
                     'Grupo_vch_Horario'     => $mArrDados[$a]['Grupo_vch_Horario'],
                     'Usuario_lng_Codigo'    => $mArrDados[$a]['Usuario_lng_Codigo'],
                     'Periodo_lng_Codigo'    => $mArrDados[$a]['Periodo_lng_Codigo'],
@@ -174,11 +174,11 @@ class GrupoDB
         if (is_array($mArrDados))
         {          
             $oGrupo = [
-                'Grupo_lng_Codigo'  => $mArrDados[$a]['Grupo_lng_Codigo'],
-                'Grupo_vch_Nome'    => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
-                'Grupo_vch_Horario' => $mArrDados[$a]['Grupo_vch_Horario'],
-                'Usuario_lng_Codigo'=> $mArrDados[$a]['Usuario_lng_Codigo'],
-                'Periodo_lng_Codigo'=> $mArrDados[$a]['Periodo_lng_Codigo'],
+                'Grupo_lng_Codigo'  => $mArrDados['Grupo_lng_Codigo'],
+                'Grupo_vch_Nome'    => $mArrDados['Grupo_vch_Nome'],
+                'Grupo_vch_Horario' => $mArrDados['Grupo_vch_Horario'],
+                'Usuario_lng_Codigo'=> $mArrDados['Usuario_lng_Codigo'],
+                'Periodo_lng_Codigo'=> $mArrDados['Periodo_lng_Codigo'],
              ];
         }
         
@@ -191,8 +191,7 @@ class GrupoDB
         
         $sSql=$oConexao->prepare("UPDATE Grupo SET
                     Grupo_vch_Nome       = :nome,
-                    Grupovch_Horario      = :horario,
-                    Usuario_lng_Codigo  = :usuario,
+                    Grupo_vch_Horario      = :horario,
                     Periodo_lng_Codigo  = :periodo
                     WHERE Grupo_lng_Codigo = :codigo " );
  
@@ -200,7 +199,6 @@ class GrupoDB
         $sSql->bindParam(':nome',   ($oGrupo->Grupo_vch_Nome));
         $sSql->bindParam(':horario',  ($oGrupo->Grupo_vch_Horario));
         $sSql->bindParam(':periodo',     ($oGrupo->Periodo_lng_Codigo));
-        $sSql->bindParam(':usuario',  ($oGrupo->Usuario_lng_Codigo));
         
         $sSql->execute();
     }

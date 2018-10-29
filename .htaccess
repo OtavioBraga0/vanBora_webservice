@@ -17,4 +17,6 @@ RewriteRule ^validaUsuario$         index.php?pagina=site/validaUsuario
 
 RewriteRule ^listaGrupoMotorista$   index.php?pagina=site/listaGrupoMotorista
 RewriteRule ^listaGrupoAluno$       index.php?pagina=site/listaGrupoAluno
+RewriteRule ^listaGrupo$            index.php?pagina=site/listaGrupo
 RewriteRule ^salvaGrupo$            index.php?pagina=site/salvaGrupo
+RewriteRule ^editaGrupo$            index.php?pagina=site/editaGrupo

@@ -102,7 +102,7 @@ class AlunoDB
                     'Grupo_lng_Codigo'      => $mArrDados[$a]['Grupo_lng_Codigo'],
                     'Usuario_lng_Codigo'    => $mArrDados[$a]['Usuario_lng_Codigo'],
                     'Aluno_chr_Confirmacao' => $mArrDados[$a]['Aluno_chr_Confirmacao'],
-                    'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome']),
+                    'Usuario_vch_Nome'      => $mArrDados[$a]['Usuario_vch_Nome'],
                  ];
 
                  $arrObjAluno[] = $oAluno;
@@ -177,7 +177,7 @@ class AlunoDB
                 'Grupo_lng_Codigo' => $mArrDados[0]['Grupo_lng_Codigo'],
                 'Usuario_lng_Codigo' => $mArrDados[0]['Usuario_lng_Codigo'],
                 'Aluno_chr_Confirmacao' => $mArrDados[0]['Aluno_chr_Confirmacao'],
-                'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome'])
+                'Usuario_vch_Nome'      => $mArrDados[$a]['Usuario_vch_Nome']
              ];
         }
         
