@@ -1,13 +1,13 @@
 <?php
 
-class Grupo
+class Aluno
 {
     
     /* Atributos */
-    private $iCodigo;
-    private $sNome;
-    private $sHorario;
-    private $iUsuario;
+    private $Aluno_lng_Codigo;
+    private $Usuario_lng_Codigo;
+    private $Grupo_lng_Codigo;
+    private $Aluno_chr_Confirmacao;
     
     /* M�todos m�gicos GET e SET */
     public function __get($property) 

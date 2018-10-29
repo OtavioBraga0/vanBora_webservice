@@ -173,14 +173,14 @@ class UsuarioDB
         if (is_array($mArrDados))
         {          
             $oUsuario = [
-                'Usuario_lng_Codigo' => $mArrDados[0]['Usuario_lng_Codigo'],
-                'Usuario_vch_Nome' => utf8_encode($mArrDados[0]['Usuario_vch_Nome']),
-                'Usuario_dat_DataNascimento' => $mArrDados[0]['Usuario_dat_DataNascimento'],
-                'Usuario_vch_Endereco' => utf8_encode($mArrDados[0]['Usuario_vch_Endereco']),
-                'Usuario_vch_Numero' => utf8_encode($mArrDados[0]['Usuario_vch_Numero']),
-                'Usuario_vch_Complemento' => utf8_encode($mArrDados[0]['Usuario_vch_Complemento']),
-                'Usuario_vch_Celular' => $mArrDados[0]['Usuario_vch_Celular'],
-                'Usuario_chr_Tipo' => $mArrDados[0]['Usuario_chr_Tipo']
+                'Usuario_lng_Codigo' => $mArrDados['Usuario_lng_Codigo'],
+                'Usuario_vch_Nome' => utf8_encode($mArrDados['Usuario_vch_Nome']),
+                'Usuario_dat_DataNascimento' => $mArrDados['Usuario_dat_DataNascimento'],
+                'Usuario_vch_Endereco' => utf8_encode($mArrDados['Usuario_vch_Endereco']),
+                'Usuario_vch_Numero' => utf8_encode($mArrDados['Usuario_vch_Numero']),
+                'Usuario_vch_Complemento' => utf8_encode($mArrDados['Usuario_vch_Complemento']),
+                'Usuario_vch_Celular' => $mArrDados['Usuario_vch_Celular'],
+                'Usuario_chr_Tipo' => $mArrDados['Usuario_chr_Tipo']
              ];
         }
         

@@ -102,7 +102,7 @@ class AlunoDB
                     'Grupo_lng_Codigo'      => $mArrDados[$a]['Grupo_lng_Codigo'],
                     'Usuario_lng_Codigo'    => $mArrDados[$a]['Usuario_lng_Codigo'],
                     'Aluno_chr_Confirmacao' => $mArrDados[$a]['Aluno_chr_Confirmacao'],
-                    'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome'])
+                    'Usuario_vch_Nome'      => utf8_encode($mArrDados[$a]['Usuario_vch_Nome']),
                  ];
 
                  $arrObjAluno[] = $oAluno;
@@ -202,6 +202,22 @@ class AlunoDB
         $sSql->execute();
     }
     
+    public static final function alteraResposta( $oAluno )
+    {                 
+        $oConexao = db::conectar();
+        
+        $sSql=$oConexao->prepare("UPDATE Aluno SET
+                    Aluno_chr_Confirmacao = :confirmacao
+                    WHERE Grupo_lng_Codigo = :grupo
+                    AND Usuario_lng_Codigo = :usuario " );
+ 
+        $sSql->bindParam(':grupo',   ($oAluno->Grupo_lng_Codigo));
+        $sSql->bindParam(':usuario',  ($oAluno->Usuario_lng_Codigo));
+        $sSql->bindParam(':confirmacao',  ($oAluno->Aluno_chr_Confirmacao));
+        
+        $sSql->execute();
+    }
+
     public static final function salvaAluno( $oAluno )
     { 
         $oConexao = db::conectar();

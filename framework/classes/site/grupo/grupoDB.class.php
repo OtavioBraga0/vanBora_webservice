@@ -5,7 +5,7 @@ class GrupoDB
     
     private static $mArrCampos = '';
     private static $mArrJoin   = '';
-    private static $sOrdem     = 'Grupo_lng_Codigo';
+    private static $sOrdem     = 'grupo.Grupo_lng_Codigo';
     private static $iLimite = 0;
     private static $iInicio = 0;
     
@@ -79,12 +79,13 @@ class GrupoDB
         $mResultado = $oConexao->prepare("SELECT
                            *
                            FROM Grupo
+                           ".$sJoin."
                            WHERE 1 = 1 ".$sFiltros."                       
                            ORDER BY ".self::$sOrdem."
                            ".$sLimite."
                          ");  
 
-//        echo $mResultado->queryString;
+    //    echo $mResultado->queryString;
         $mResultado->execute();
 
         $mArrDados = $mResultado->fetchAll(PDO::FETCH_ASSOC);
@@ -97,11 +98,12 @@ class GrupoDB
             for ($a = 0, $iCount = count($mArrDados); $a < $iCount; ++$a)
             {
                  $oGrupo = [
-                    'Grupo_lng_Codigo'  => $mArrDados[$a]['Grupo_lng_Codigo'],
-                    'Grupo_vch_Nome'    => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
-                    'Grupo_vch_Horario' => $mArrDados[$a]['Grupo_vch_Horario'],
-                    'Usuario_lng_Codigo'=> $mArrDados[$a]['Usuario_lng_Codigo'],
-                    'Periodo_lng_Codigo'=> $mArrDados[$a]['Periodo_lng_Codigo'],
+                    'Grupo_lng_Codigo'      => $mArrDados[$a]['Grupo_lng_Codigo'],
+                    'Grupo_vch_Nome'        => utf8_encode($mArrDados[$a]['Grupo_vch_Nome']),
+                    'Grupo_vch_Horario'     => $mArrDados[$a]['Grupo_vch_Horario'],
+                    'Usuario_lng_Codigo'    => $mArrDados[$a]['Usuario_lng_Codigo'],
+                    'Periodo_lng_Codigo'    => $mArrDados[$a]['Periodo_lng_Codigo'],
+                    'Aluno_chr_Confirmacao' => isset($mArrDados[$a]['Aluno_chr_Confirmacao'])?$mArrDados[$a]['Aluno_chr_Confirmacao']:''
                  ];
 
                  $arrObjGrupo[] = $oGrupo;
