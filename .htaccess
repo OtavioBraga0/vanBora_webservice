@@ -8,6 +8,7 @@ ErrorDocument 404 /index.php?pagina=site/404
 RewriteRule ^listaAluno$            index.php?pagina=site/listaAluno
 RewriteRule ^salvaAluno$            index.php?pagina=site/salvaAluno
 RewriteRule ^editaAluno$            index.php?pagina=site/editaAluno
+RewriteRule ^excluiAluno$            index.php?pagina=site/excluiAluno
 
 RewriteRule ^salvaUsuario$          index.php?pagina=site/salvaUsuario
 RewriteRule ^editaUsuario$          index.php?pagina=site/editaUsuario
@@ -20,3 +21,4 @@ RewriteRule ^listaGrupoAluno$       index.php?pagina=site/listaGrupoAluno
 RewriteRule ^listaGrupo$            index.php?pagina=site/listaGrupo
 RewriteRule ^salvaGrupo$            index.php?pagina=site/salvaGrupo
 RewriteRule ^editaGrupo$            index.php?pagina=site/editaGrupo
+RewriteRule ^excluiGrupo$            index.php?pagina=site/editaGrupo

@@ -234,6 +234,19 @@ class GrupoDB
         $sSql->bindParam(':codigo',$iCodigo, PDO::PARAM_INT);   
         $sSql->execute();
     }
+
+    public static final function esvaziaGrupo( $iCodigo )
+    {
+        $oConexao = db::conectar();
+        
+        $sSql = $oConexao->prepare("DELETE FROM Aluno 
+                    WHERE Grupo_lng_Codigo = :grupo ");
+       
+        $sSql->bindParam(':codigo',$iCodigo, PDO::PARAM_INT);    
+        $sRetorno = $sSql->execute();
+
+        return $sRetorno;
+    }
  
 }
 

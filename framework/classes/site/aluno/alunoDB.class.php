@@ -237,18 +237,19 @@ class AlunoDB
         //$sSql->debugDumpParams(); 
     }
     
-    public static final function excluiAluno( $iCodigo  )
+    public static final function excluiAluno( $iUsuario, $iGrupo )
     {
         $oConexao = db::conectar();
         
         $sSql = $oConexao->prepare("DELETE FROM Aluno 
-                    WHERE Aluno_lng_Codigo = :codigo ");
+                    WHERE Grupo_lng_Codigo = :grupo AND Usuario_lng_Codigo = :usuario ");
        
-        $sSql->bindParam(':codigo',$iCodigo, PDO::PARAM_INT);   
-        $sSql->execute();
+        $sSql->bindParam(':grupo',$iGrupo);   
+        $sSql->bindParam(':usuario',$iUsuario);   
+        $sRetorno = $sSql->execute();
+
+        return $sRetorno;
     }
-  
- 
 }
 
 ?>
