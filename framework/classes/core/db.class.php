@@ -8,7 +8,7 @@ class db
     {
         try
         {
-            self::$oConexao = new PDO( "mysql:host=".CONFIG::HOST.";port=3306;dbname=".CONFIG::DB, CONFIG::USER, CONFIG::PSWD,array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES latin1'));
+            self::$oConexao = new PDO( "mysql:host=".CONFIG::HOST.";port=3306;dbname=".CONFIG::DB, CONFIG::USER, CONFIG::PSWD);
         }
         catch (PDOException $e)
         {

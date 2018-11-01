@@ -2,7 +2,7 @@
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: Content-Type");
     header("Content-Type: application/json");
-    
+
     #LC_ALL converte todas as definicoes do php para portugues inclusive a moeda
 	setlocale(LC_ALL, "ptb");
     date_default_timezone_set("America/Sao_paulo");
@@ -25,7 +25,7 @@
     session_start();
 
     /* Define os Caminhos Absolutos */
-    define ( 'PATH_SISTEMA', 'faculdade/vanBora' );
+    define ( 'PATH_SISTEMA', 'faculdade/vanBora_webservice' );
     define ( 'PATH_FW',      'framework' );
     define ( 'PATH_ABS',     dirname ( __FILE__ ) . '\\' );
     define ( 'PATH_WWW',     'http://' . $_SERVER['HTTP_HOST'] .'/'.PATH_SISTEMA.'/');
