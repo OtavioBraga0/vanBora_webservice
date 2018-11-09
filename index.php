@@ -2,7 +2,7 @@
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: Content-Type");
     header("Content-Type: application/json");
-    
+
     #LC_ALL converte todas as definicoes do php para portugues inclusive a moeda
 	setlocale(LC_ALL, "ptb");
     date_default_timezone_set("America/Sao_paulo");
