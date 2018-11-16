@@ -12,6 +12,7 @@
         $oUsuario->Usuario_vch_Numero = $_POST['Usuario_vch_Numero'];
         $oUsuario->Usuario_vch_Complemento = $_POST['Usuario_vch_Complemento'];
         $oUsuario->Usuario_chr_Tipo = $_POST['Usuario_chr_Tipo'];
+        $oUsuario->Usuario_vch_DeviceId = $_POST['Usuario_vch_DeviceId'];
 
         $sRetorno = UsuarioDB::salvaUsuario($oUsuario);
 

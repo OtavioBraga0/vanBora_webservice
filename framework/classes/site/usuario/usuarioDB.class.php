@@ -104,7 +104,8 @@ class UsuarioDB
                     'Usuario_vch_Numero' => $mArrDados[$a]['Usuario_vch_Numero'],
                     'Usuario_vch_Complemento' => $mArrDados[$a]['Usuario_vch_Complemento'],
                     'Usuario_vch_Celular' => $mArrDados[$a]['Usuario_vch_Celular'],
-                    'Usuario_chr_Tipo' => $mArrDados[$a]['Usuario_chr_Tipo']
+                    'Usuario_chr_Tipo' => $mArrDados[$a]['Usuario_chr_Tipo'],
+                    'Usuario_vch_DeviceId' => $mArrDados[$a]['Usuario_vch_DeviceId']
                  ];
 
                  $arrObjUsuario[] = $oUsuario;
@@ -167,10 +168,10 @@ class UsuarioDB
                          ");  
         
         $mResultado->execute();
-        
+
         $mArrDados = $mResultado->fetch(PDO::FETCH_ASSOC);
-      
-        if (is_array($mArrDados))
+
+        if ($mArrDados['Usuario_lng_Codigo'] != "")
         {          
             $oUsuario = [
                 'Usuario_lng_Codigo' => $mArrDados['Usuario_lng_Codigo'],
@@ -180,10 +181,10 @@ class UsuarioDB
                 'Usuario_vch_Numero' => $mArrDados['Usuario_vch_Numero'],
                 'Usuario_vch_Complemento' => $mArrDados['Usuario_vch_Complemento'],
                 'Usuario_vch_Celular' => $mArrDados['Usuario_vch_Celular'],
-                'Usuario_chr_Tipo' => $mArrDados['Usuario_chr_Tipo']
+                'Usuario_chr_Tipo' => $mArrDados['Usuario_chr_Tipo'],
+                'Usuario_vch_DeviceId' => $mArrDados['Usuario_vch_DeviceId']
              ];
-        }
-        
+        }         
         return $oUsuario;     
     }
 
@@ -224,8 +225,9 @@ class UsuarioDB
                     Usuario_vch_Numero,
                     Usuario_vch_Complemento,
                     Usuario_vch_Celular,
-                    Usuario_chr_Tipo
-                    ) VALUES ( ?,?,?,?,?,?,? )"); 
+                    Usuario_chr_Tipo,
+                    Usuario_vch_DeviceId
+                    ) VALUES ( ?,?,?,?,?,?,?,? )"); 
         
         $sSql->bindParam(1,   ($oUsuario->Usuario_vch_Nome));
         $sSql->bindParam(2,  ($oUsuario->Usuario_dat_DataNascimento));
@@ -234,6 +236,7 @@ class UsuarioDB
         $sSql->bindParam(5,  ($oUsuario->Usuario_vch_Complemento));
         $sSql->bindParam(6,  ($oUsuario->Usuario_vch_Celular));
         $sSql->bindParam(7,  ($oUsuario->Usuario_chr_Tipo));
+        $sSql->bindParam(8,  ($oUsuario->Usuario_vch_DeviceId));
         $sSql->execute();
         
         return $oConexao->lastInsertId(); 

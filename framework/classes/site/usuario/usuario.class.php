@@ -12,6 +12,7 @@ class Usuario
     private $Usuario_vch_Complemento;
     private $Usuario_vch_Celular;
     private $Usuario_chr_Tipo;
+    private $Usuario_vch_DeviceId;
     
     /* M�todos m�gicos GET e SET */
     public function __get($property) 
