@@ -7,10 +7,10 @@ class Config
 	const EMAIL_SITE = "zenithdevteam0@gmail.com";
 
     // Informa��es de Conex�o - DB MySQL
-	const HOST = 'localhost';
-    const USER = 'root';
-    const PSWD = '';
-    const DB   = 'vanbora';
+	const HOST = 'us-cdbr-iron-east-01.cleardb.net';
+    const USER = 'b026d32be5d880';
+    const PSWD = 'bf108166';
+    const DB   = 'heroku_00fb156f7be6116';
 
     // const HOST = 'us-cdbr-iron-east-01.cleardb.net';
 	// const USER = 'b026d32be5d880';
